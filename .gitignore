@@ -1,0 +1,7 @@
+# NPM stuff
+node_modules/
+# Running stuff
+dist/
+# Uploaded stuff
+server/media/
+

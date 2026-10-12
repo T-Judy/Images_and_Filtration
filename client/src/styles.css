@@ -1,0 +1,221 @@
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; 
+}
+.top-bar {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 8px;
+}
+#search-bar {
+    flex: 1; padding: 10px; font-size: 1rem;
+    border: 1px solid #ccc; border-radius: 6px;
+}
+#add-btn {
+    padding: 10px 18px; font-size: 1rem; cursor: pointer;
+    background: #2a7ae2; color: white;
+    border: none; border-radius: 6px; white-space: nowrap;
+}
+#add-btn:hover { background: #1a5fbf; }
+
+#status-hint { color: #888; font-size: 0.85rem; margin-bottom: 16px; }
+
+#effects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+.effect-card {
+    border: 1px solid #ddd; border-radius: 8px;
+    padding: 14px; background: #fafafa;
+}
+.effect-card img.icon { width: 64px; height: 64px; object-fit: contain; }
+.effect-card h3 { margin: 8px 0 4px; }
+.effect-card .stats { font-size: 0.85rem; color: #555; margin: 6px 0; }
+.related { margin-top: 8px; }
+.related span { font-size: 0.8rem; color: #777; }
+.related-icon { width: 24px; height: 24px; object-fit: contain; margin-right: 4px; vertical-align: middle; }
+/* (Originally display:none and toggled from JS; React now renders this element only when needed.) */
+#no-results { color: #999; text-align: center; margin-top: 40px; }
+
+/* Modal Stuff */
+.modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    align-items: center; justify-content: center;
+}
+.modal-overlay.active { display: flex; }
+
+/* Modal box */
+.modal {
+    background: white; border-radius: 10px;
+    padding: 28px; width: 100%; max-width: 500px;
+    max-height: 90vh; overflow-y: auto;
+    position: relative;
+}
+.modal h2 { margin-top: 0; }
+
+.modal-close {
+    position: absolute; top: 14px; right: 16px;
+    background: none; border: none;
+    font-size: 1.4rem; cursor: pointer; color: #555;
+}
+.modal-close:hover { color: #000; }
+
+/* Form stuff */
+.form-group { margin-bottom: 14px; }
+.form-group label {
+    display: block; font-weight: bold;
+    margin-bottom: 4px; font-size: 0.9rem;
+}
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group input[type="file"] {
+    width: 100%; padding: 8px;
+    border: 1px solid #ccc; border-radius: 5px;
+    font-size: 0.95rem;
+}
+.form-group textarea { resize: vertical; }
+
+/* Checkbox list for related effects */
+.checkbox-list {
+    max-height: 130px; overflow-y: auto;
+    border: 1px solid #ccc; border-radius: 5px;
+    padding: 8px;
+}
+.checkbox-list label {
+    font-weight: normal; display: flex;
+    align-items: center; gap: 6px;
+    padding: 2px 0; cursor: pointer;
+}
+
+.errorlist {
+    color: #c0392b; font-size: 0.85rem;
+    padding: 0; margin: 4px 0 0 0; list-style: none;
+}
+
+.form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+.btn-cancel {
+    padding: 9px 16px; border: 1px solid #ccc;
+    border-radius: 6px; background: white; cursor: pointer;
+}
+.btn-submit {
+    padding: 9px 16px; background: #2a7ae2; color: white;
+    border: none; border-radius: 6px; cursor: pointer;
+}
+.btn-submit:hover { background: #1a5fbf; }
+
+/* Delete button */
+.delete-form {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    margin: 0;
+}
+
+.effect-card {
+    position: relative; /* add this to existing rule */
+}
+
+.btn-delete {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #c0392b;
+    border-radius: 4px;
+    line-height: 1;
+    transition: background 0.15s;
+}
+
+.btn-delete:hover {
+    background: #fdecea;
+}
+
+.btn-delete svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+/* Show trash icon only when hovering the card AND shift is held */
+.effect-card.shift-held:hover .btn-delete {
+    display: block;
+}
+
+/* White blinds me lets try and make it dark */       
+.theme-toggle-wrapper {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 50;
+}
+
+.theme-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+.theme-toggle input { display: none; }
+
+.toggle-track {
+    width: 44px; height: 24px;
+    background: #ccc;
+    border-radius: 999px;
+    position: relative;
+    transition: background 0.2s;
+}
+.toggle-thumb {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 18px; height: 18px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+#theme-checkbox:checked + .toggle-track { background: #2a7ae2; }
+#theme-checkbox:checked + .toggle-track .toggle-thumb { transform: translateX(20px); }
+
+/* Dark mode overrides - Material Design - https://m2.material.io/design/color/dark-theme.html
+#121212 — Background
+#1e1e1e — Cards + 1 layer
+#2a2a2a — Inputs & Checkboxes + 2
+#3a3a3a — borders
+#e0e0e0 — primary text; e0 is much nicer too look at than #ffffff
+#bbb, #aaa, #777, #666 — secondary and tertiary text
+*/
+
+body.dark { background: #121212; color: #e0e0e0; }
+body.dark h1 { color: #f0f0f0; }
+body.dark #search-bar { background: #1e1e1e; color: #e0e0e0; border-color: #3a3a3a; }
+body.dark #search-bar::placeholder { color: #666; }
+body.dark #status-hint { color: #666; }
+body.dark #no-results { color: #555; }
+body.dark .effect-card { background: #1e1e1e; border-color: #2a2a2a; }
+body.dark .effect-card h3 { color: #f0f0f0; }
+body.dark .effect-card p { color: #aaa; }
+body.dark .effect-card .stats { color: #777; }
+body.dark .related span { color: #666; }
+body.dark .modal-overlay { background: rgba(0,0,0,0.7); }
+body.dark .modal { background: #1e1e1e; color: #e0e0e0; }
+body.dark .modal h2 { color: #f0f0f0; }
+body.dark .modal-close { color: #888; }
+body.dark .modal-close:hover { color: #e0e0e0; }
+body.dark .form-group label { color: #bbb; }
+body.dark .form-group input[type="text"],
+body.dark .form-group input[type="number"],
+body.dark .form-group textarea,
+body.dark .form-group input[type="file"] { background: #2a2a2a; color: #e0e0e0; border-color: #3a3a3a; }
+body.dark .checkbox-list { background: #2a2a2a; border-color: #3a3a3a; }
+body.dark .checkbox-list label { color: #ccc; }
+body.dark .btn-cancel { background: #2a2a2a; border-color: #3a3a3a; color: #ccc; }
+body.dark .btn-delete { color: #e05555; }
+body.dark .btn-delete:hover { background: #2a1a1a; }
+body.dark .errorlist { color: #e05555; }
+
+/* Added for the React port: shown when the API can't be reached or a request fails. */
+.app-error { color: #c0392b; font-size: 0.9rem; margin: 0 0 12px; }
+body.dark .app-error { color: #e05555; }
